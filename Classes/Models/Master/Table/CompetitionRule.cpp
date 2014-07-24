@@ -1,0 +1,46 @@
+//
+//  CompetitionRule.cpp
+//  koumeChan
+//
+//  Created by 上野　彰三 on 2014/04/01.
+//
+//
+
+#include "CompetitionRule.h"
+#include "JsonKeyString.h"
+#include "KoumeChan.h"
+
+using namespace cocos2d;
+using namespace std;
+
+CompetitionRule::CompetitionRule()
+{
+	
+}
+
+CompetitionRule::~CompetitionRule()
+{
+}
+
+CompetitionRule* CompetitionRule::createWithJson(Json *json)
+{
+	CompetitionRule* pRet = new CompetitionRule();
+	if(pRet && pRet->initWithJson(json)){
+		pRet->autorelease();
+	}
+	else{
+		CC_SAFE_DELETE(pRet);
+		pRet = NULL;
+	}
+	return pRet;
+}
+
+
+
+string CompetitionRule::toJsonString()
+{
+	string baseStr = BaseNamedMaster::toJsonString();
+	string jsonStr = StringUtils::format("{%s}",baseStr.c_str());
+	return jsonStr;
+}
+
