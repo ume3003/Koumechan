@@ -20,7 +20,7 @@ using namespace cocos2d::network;
 
 FriendMatchLayer::FriendMatchLayer()
 {
-	
+		//test
 }
 
 FriendMatchLayer::~FriendMatchLayer()
