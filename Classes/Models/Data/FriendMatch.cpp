@@ -16,7 +16,7 @@ FriendMatch::FriendMatch() : m_myPlayer(NULL),m_urPlayer(NULL)
 {
 	
 }
-FriendMatch* FriendMatch::createWithJson(Json *json,cocos2d::Value myUUID)
+FriendMatch* FriendMatch::createWithJson(Json *json,cocos2d::Value& myUUID)
 {
 	FriendMatch* pRet = new FriendMatch();
 	if(pRet && pRet->loadFromSrv(json,myUUID)){
@@ -35,7 +35,7 @@ Friends* FriendMatch::getFriends()
 	}
 	return getMyPlayer();
 }
-bool FriendMatch::loadFromSrv(Json *json,cocos2d::Value myUUID)
+bool FriendMatch::loadFromSrv(Json *json,cocos2d::Value& myUUID)
 {
 	if(json){
 		string err = Json_getString(json,JS_ERROR,"");

@@ -36,18 +36,16 @@ bool CompetitionScene::init()
 				
 				setPlayer1Force(KoumeChan::getInstance()->getForceMaster(fm->getOwner() ? 3 : 4));
 				setPlayer2Force(KoumeChan::getInstance()->getForceMaster(fm->getOwner() ? 4 : 3));
+				setPlayer1(fm->getOwner() ? fm->getMyPlayer() : fm->getUrPlayer());
+				setPlayer2(fm->getOwner() ? fm->getUrPlayer() : fm->getMyPlayer());
 				
 				long cnt = sce->getUnitCount();
-				int spriteCount = 0;
 				for(long l = 0;l < cnt ;l++){
 					ScenarioUnit* scenarioUnit = (ScenarioUnit*)sce->getUnit(l);
 					MasterUnit* unit = KoumeChan::getInstance()->getUnitMaster(scenarioUnit->getKeyNo());
 					if(unit){
 						if(unit->getForceNo() == getPlayer1Force()->getMasterNo()){
-							log("次キャラ %s %s",V2C(unit->getName()),V2C(unit->getImage()));
-							
-							setUnitSpriteName(spriteCount, unit->getFrameName());
-							spriteCount++;
+							addOwnUnitFrameName(unit->getFrameName());
 						}
 						for(int i = 0;i < unit->getSkillCount();i++){
 							BaseConditionMaster* unitSkill = unit->getSkill(i);
@@ -209,7 +207,15 @@ void CompetitionScene::askSeed()
 
 long CompetitionScene::getPlayer2HitPoint()
 {
-	return 200;
+	long hp = 90;
+	FriendMatch* fm = KoumeChan::getInstance()->getFriendMatch();
+	if(fm){
+		Friends* f = fm->getFriends();
+		if(f){
+			hp = MAX(hp, f->getHP());
+		}
+	}
+	 return hp;
 }
 int CompetitionScene::getCurrentMaxPhaseCount(PUZZLE_PHASE phase)
 {
@@ -455,29 +461,3 @@ long CompetitionScene::getSeed()
 	}
 	return -1;
 };
-string CompetitionScene::getOwnUnitSpriteFrameName(int no)
-{
-	switch(no){
-		case 0:
-			return getUnitSpriteName1();
-		case 1:
-			return getUnitSpriteName2();
-		default:
-			break;
-	}
-	return StringUtils::format("");
-}
-void CompetitionScene::setUnitSpriteName(int no, std::string name)
-{
-	switch(no){
-		case 0:
-			setUnitSpriteName1(name);
-			break;
-		case 1:
-			setUnitSpriteName2(name);
-			break;
-		default:
-			break;
-	}
-}
-

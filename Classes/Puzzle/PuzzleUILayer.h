@@ -31,6 +31,7 @@ public:
 	void tappedLB(cocos2d::Ref* pSender,cocos2d::extension::Control::EventType pCCControlEvent);
 	
 	void setUnitSprite();
+	void showUnitSprite(bool bShow);
     virtual void onEnter();
 	virtual void onEnterTransitionDidFinish();
 	virtual bool init();

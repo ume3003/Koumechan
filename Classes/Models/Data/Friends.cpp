@@ -37,6 +37,8 @@ bool Friends::loadFromSrv(Json *json)
 		Json* fr = Json_getItem(json, JS_FRIEND);
 		if(fr){
 			setLoginId(KoumeChan::getLLong(fr, JS_ID, -1));
+			setHP(KoumeChan::getLLong(fr, JS_HP, -1));
+			setLevel(KoumeChan::getLLong(fr, JS_LEVEL, -1));
 			setUUID(Value(Json_getString(fr,JS_UUID,"")));
 			setName(Value(Json_getString(fr,JS_DISPLAY_NAME,"")));
 			setURL(Value(Json_getString(fr,JS_IMAGE_URL,"")));
@@ -44,6 +46,8 @@ bool Friends::loadFromSrv(Json *json)
 		}
 		else{
 			setLoginId(KoumeChan::getLLong(json, JS_ID, -1));
+			setHP(KoumeChan::getLLong(json, JS_HP, -1));
+			setLevel(KoumeChan::getLLong(json, JS_LEVEL, -1));
 			setUUID(Value(Json_getString(json,JS_UUID,"")));
 			setName(Value(Json_getString(json,JS_DISPLAY_NAME,"")));
 			setURL(Value(Json_getString(json,JS_IMAGE_URL,"")));
@@ -52,4 +56,44 @@ bool Friends::loadFromSrv(Json *json)
 		return true;
 	}
 	return false;
+};
+
+Friends* Friends::createMyData()
+{
+	KoumeChan* chan = KoumeChan::getInstance();
+	GameCharacter* chara = chan->getGameCharacter();
+	Friends* pRet = new Friends();
+	if(pRet ){
+		pRet->autorelease();
+		pRet->setLoginId(chan->getLoginId());
+		pRet->setHP(chara->getHP());
+		pRet->setLevel(chara->getLevel());
+		pRet->setUUID(chan->getUUID());
+		pRet->setName(chan->getDisplayName());
+		pRet->setURL(chan->getProfileUrl());
+		pRet->setEmail(chan->getMailAddress());
+	}
+	else{
+		CC_SAFE_DELETE(pRet);
+		pRet = NULL;
+	}
+	return pRet;
+};
+
+Friends* Friends::createNPC(MasterNPC *npc)
+{
+	Friends* pRet = new Friends();
+	if(pRet ){
+		pRet->autorelease();
+		pRet->setLoginId(-1);
+		pRet->setHP(npc->getHP());
+		pRet->setLevel(npc->getLevel());
+		pRet->setName(npc->getName());
+		pRet->setURL(npc->getImage());
+	}
+	else{
+		CC_SAFE_DELETE(pRet);
+		pRet = NULL;
+	}
+	return pRet;
 };

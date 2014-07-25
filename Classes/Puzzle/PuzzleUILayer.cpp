@@ -281,6 +281,17 @@ void PuzzleUILayer::onEnter()
 	initControl(m_Scorepanel, true, true);
 	initControl(m_BasePanel, false, true);
 };
+
+void PuzzleUILayer::showUnitSprite(bool bShow)
+{
+	if(m_unit1){
+		m_unit1->setVisible(bShow);
+	}
+	if(m_unit2){
+		m_unit2->setVisible(bShow);
+	}
+}
+
 void PuzzleUILayer::setUnitSprite()
 {
 	PuzzleScene* scene = (PuzzleScene*)getParent();
@@ -291,19 +302,21 @@ void PuzzleUILayer::setUnitSprite()
 		m_unit1->setVisible(false);
 	}
 	else{
-		m_unit1->setVisible(true);
 		m_unit1->setSpriteFrame(frameName1);
 		Size sizeNew = m_unit1->getContentSize();
-		m_unit1->setScale(sizeOrg.width / sizeNew.width);
+		m_unit1->setScale(sizeOrg.width / sizeNew.width / 2);
+		m_unit1->setAnchorPoint(Vec2(0,1));
+		m_unit1->setPositionX(m_unit1->getPositionX()  - sizeOrg.width / 2);
 	}
 	if(frameName2.length() == 0){
 		m_unit2->setVisible(false);
 	}
 	else{
-		m_unit2->setVisible(true);
 		m_unit2->setSpriteFrame(frameName2);
 		Size sizeNew = m_unit2->getContentSize();
-		m_unit2->setScale(sizeOrg.width / sizeNew.width);
+		m_unit2->setScale(sizeOrg.width / sizeNew.width / 2);
+		m_unit2->setAnchorPoint(Vec2(0,1));
+		m_unit2->setPositionX(m_unit2->getPositionX() - sizeOrg.width);
 	}
 };
 

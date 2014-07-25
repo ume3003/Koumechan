@@ -5,9 +5,9 @@
 	<key>texture</key>
 	<dict>
 		<key>height</key>
-		<integer>512</integer>
+		<integer>80</integer>
 		<key>width</key>
-		<integer>512</integer>
+		<integer>80</integer>
 	</dict>
 	<key>frames</key>
 	<dict>
@@ -16,57 +16,57 @@
 			<key>x</key>
 			<integer>0</integer>
 			<key>y</key>
-			<integer>250</integer>
+			<integer>80</integer>
 			<key>width</key>
-			<integer>250</integer>
+			<integer>80</integer>
 			<key>height</key>
-			<integer>250</integer>
+			<integer>80</integer>
 			<key>offsetX</key>
 			<integer>0</integer>
 			<key>offsetY</key>
 			<integer>0</integer>
 			<key>originalWidth</key>
-			<integer>250</integer>
+			<integer>80</integer>
 			<key>originalHeight</key>
-			<integer>250</integer>
+			<integer>80</integer>
 		</dict>
 		<key>tomopenex0.png</key>
 		<dict>
 			<key>x</key>
-			<integer>250</integer>
+			<integer>80</integer>
 			<key>y</key>
-			<integer>250</integer>
+			<integer>80</integer>
 			<key>width</key>
-			<integer>250</integer>
+			<integer>80</integer>
 			<key>height</key>
-			<integer>250</integer>
+			<integer>80</integer>
 			<key>offsetX</key>
 			<integer>0</integer>
 			<key>offsetY</key>
 			<integer>0</integer>
 			<key>originalWidth</key>
-			<integer>250</integer>
+			<integer>80</integer>
 			<key>originalHeight</key>
-			<integer>250</integer>
+			<integer>80</integer>
 		</dict>
 		<key>limitbreak.png</key>
 		<dict>
 			<key>x</key>
 			<integer>0</integer>
 			<key>y</key>
-			<integer>150</integer>
+			<integer>0</integer>
 			<key>width</key>
-			<integer>250</integer>
+			<integer>160</integer>
 			<key>height</key>
-			<integer>100</integer>
+			<integer>80</integer>
 			<key>offsetX</key>
 			<integer>0</integer>
 			<key>offsetY</key>
 			<integer>0</integer>
 			<key>originalWidth</key>
-			<integer>250</integer>
+			<integer>160</integer>
 			<key>originalHeight</key>
-			<integer>250</integer>
+			<integer>48</integer>
 		</dict>
 	</dict>
 </dict>

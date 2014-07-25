@@ -20,7 +20,7 @@
 using namespace cocos2d;
 using namespace cocosbuilder;
 
-PuzzleScene::PuzzleScene() : m_UI(NULL),m_Map(NULL),m_player1Force(NULL),m_player2Force(NULL),m_NeutralForce(NULL),m_Player1Face(NULL),m_Player2Face(NULL)
+PuzzleScene::PuzzleScene() : m_UI(NULL),m_Map(NULL),m_player1Force(NULL),m_player2Force(NULL),m_NeutralForce(NULL),m_Player1Face(NULL),m_Player2Face(NULL),m_Player1(NULL),m_Player2(NULL)
 {
 	// TODO:for VS setfrom outside
 	setBattleFirst(PHASE_PLAYER_2);
@@ -28,6 +28,9 @@ PuzzleScene::PuzzleScene() : m_UI(NULL),m_Map(NULL),m_player1Force(NULL),m_playe
 
 PuzzleScene::~PuzzleScene()
 {
+	m_taskMap.clear();
+	m_ownUnitFrameName.clear();
+	
 	CC_SAFE_RELEASE(m_UI);
 	CC_SAFE_RELEASE(m_Map);
 	CC_SAFE_RELEASE(m_NeutralForce);
@@ -35,6 +38,8 @@ PuzzleScene::~PuzzleScene()
 	CC_SAFE_RELEASE(m_player2Force);
 	CC_SAFE_RELEASE(m_Player1Face);
 	CC_SAFE_RELEASE(m_Player2Face);
+	CC_SAFE_RELEASE(m_Player1);
+	CC_SAFE_RELEASE(m_Player2);
 }
 
 const char* PuzzleScene::getConnectInfoDlgTitleMessage()
@@ -315,9 +320,11 @@ void PuzzleScene::sayPhase()
 		if(sp){
 			if(getPhase() == PHASE_PLAYER_1){
 				sp->setTexture(getPlayer1Face());
+				ui->showUnitSprite(true);
 			}
 			else{
 				sp->setTexture(getPlayer2Face());
+				ui->showUnitSprite(false);
 			}
 		}
 	}
@@ -526,7 +533,14 @@ void PuzzleScene::fullAttackAnimation()
 
 void PuzzleScene::phaseChangeAnimation()
 {
-	std::string str = StringUtils::format("%s のこり%d回", V2C(getCurrentPhaseForce()->getName()),getPhaseCount());
+	Friends* player = getCurrentPhasePlayer();
+	std::string str;
+	if(player == NULL){
+		str = StringUtils::format("%s のこり%d回", V2C(getCurrentPhaseForce()->getName()),getPhaseCount());
+	}
+	else{
+		str = StringUtils::format("%s のこり%d回", V2C(player->getName()),getPhaseCount());
+	}
 
 	Size winSize = Director::getInstance()->getWinSize();
 	Label* ttf = Label::createWithSystemFont(str.c_str(),DLG_FONT, DLG_LARGE_FONT_SIZE);
@@ -800,6 +814,16 @@ Force* PuzzleScene::getCurrentPhaseForce()
 	}
 	return getNeutralForce();
 }
+Friends* PuzzleScene::getCurrentPhasePlayer()
+{
+	if(getPhase() == PHASE_PLAYER_1){
+		return getPlayer1();
+	}
+	if(getPhase() == PHASE_PLAYER_2){
+		return getPlayer2();
+	}
+	return NULL;
+}
 
 
 long PuzzleScene::getHitpoit(PuzzleScene::PUZZLE_PHASE phase)
@@ -864,5 +888,17 @@ long PuzzleScene::getSeed()
 	}
 	return 0L;
 }
+void PuzzleScene::addOwnUnitFrameName(std::string frameName)
+{
+	m_ownUnitFrameName.push_back(frameName);
+}
+std::string PuzzleScene::getOwnUnitSpriteFrameName(int no)
+{
+	if(0 <= no && no < m_ownUnitFrameName.size()){
+		return m_ownUnitFrameName.at(no);
+	}
+	return "";
+};
+
 
 

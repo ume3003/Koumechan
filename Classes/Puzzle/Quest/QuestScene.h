@@ -20,7 +20,6 @@ public:
 	virtual bool init();
 	virtual MasterMap* getCurrentMap();
 	virtual PuzzleTMXTiledMap* createTiledMap();
-	virtual std::string getOwnUnitSpriteFrameName(int no) ;
 
 protected:
 	

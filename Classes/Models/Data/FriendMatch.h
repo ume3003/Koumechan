@@ -31,8 +31,8 @@ protected:
 	
 	
 public:
-	static FriendMatch* createWithJson(Json* json,cocos2d::Value myUUID);
-	virtual bool loadFromSrv(Json* json,cocos2d::Value myUUID);
+	static FriendMatch* createWithJson(Json* json,cocos2d::Value& myUUID);
+	virtual bool loadFromSrv(Json* json,cocos2d::Value& myUUID);
 	Friends* getFriends();
 };
 

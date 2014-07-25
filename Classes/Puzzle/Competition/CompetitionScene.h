@@ -25,8 +25,6 @@ public:
 	virtual void userAllLBCommand();
 	virtual void userSelectUnit(cocos2d::Point pos);
 	virtual long getSeed();
-	virtual std::string getOwnUnitSpriteFrameName(int no) ;
-	void setUnitSpriteName(int no,std::string name);
 
 protected:
 	enum COMMAND {
@@ -69,8 +67,6 @@ protected:
 	
 	std::vector<int> m_vecRateArray;
 	CC_SYNTHESIZE(int, m_RatePos, RatePos);
-	CC_SYNTHESIZE(std::string,m_unitSpriteName1,UnitSpriteName1);
-	CC_SYNTHESIZE(std::string,m_unitSpriteName2,UnitSpriteName2);
 };
 
 #endif /* defined(__Koumechan__CompetitionScene__) */

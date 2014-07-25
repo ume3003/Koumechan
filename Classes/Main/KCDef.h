@@ -12,7 +12,7 @@
 #include "cocos2d.h"
 
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-//	#define TARGET_URL	"http://localhost:9000"
+//#define TARGET_URL	"http://localhost:9000"
 #define TARGET_URL	"http://dev02.tomoeto.com:9000"
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 //#define TARGET_URL	"http://192.168.0.4:9000"

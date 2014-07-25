@@ -105,11 +105,13 @@ cocos2d::extension::TableViewCell* FriendMatchLayer::getNewCell(long index)
 		if(fMList && f){
 			FriendMatch* fM = fMList->getFriendMatch(f->getLoginId());
 			if(fM){
-				string str = StringUtils::format("○ %s",V2C(f->getName()));
+				string str = StringUtils::format("○ %s LV:%ld HP:%ld",V2C(f->getName()),f->getLevel(),f->getHP());
 				return KcListCell::create(f->getLoginId(),Value(str),Value(""),Size(getCellWidth(),getCellHeight()));
 			}
 		}
-		return KcListCell::create(f->getLoginId(),f->getName(),Value(""),Size(getCellWidth(),getCellHeight()));
+		string str = StringUtils::format("%s LV:%ld HP:%ld",V2C(f->getName()),f->getLevel(),f->getHP());
+		log("+++++++++++++++++++%s +++++++++++++++++++",str.c_str());
+		return KcListCell::create(f->getLoginId(),Value(str),Value(""),Size(getCellWidth(),getCellHeight()));
 	}
 	KcListCell* cell = KcListCell::create(index, Value(StringUtils::format("No %ld",index)), Value(""), Size(getCellWidth(),getCellHeight()));
 	return cell;

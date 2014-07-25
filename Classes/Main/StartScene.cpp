@@ -238,6 +238,7 @@ bool StartScene::loadedLogin(Json *json)
 	KoumeChan::getInstance()->setGameCharacter(gc);
 	KoumeChan::getInstance()->setSessionId(Value(sessionid));
 	KoumeChan::getInstance()->setUUID(Value(uuid));
+	KoumeChan::getInstance()->setLoginId(KoumeChan::getLong(json, JS_ID, -1L));
 	KoumeChan::getInstance()->savePref();
 	log("+++++++++uuid = %s sesionid = %s ",uuid.c_str(),sessionid.c_str());
 	std::string appJsonString = KoumeChan::getInstance()->getSessionJsonString();

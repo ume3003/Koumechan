@@ -11,9 +11,13 @@
 
 #include "cocos2d.h"
 #include "spine/json.h"
+#include "MasterNPC.h"
 
 class Friends : public cocos2d::Ref
 {
+public:
+	static Friends* createMyData();
+	static Friends* createNPC(MasterNPC* npc);
 protected:
 	Friends();
 	virtual ~Friends() {};
@@ -24,6 +28,8 @@ protected:
 	CC_SYNTHESIZE(cocos2d::Value,m_name,Name);
 	CC_SYNTHESIZE(cocos2d::Value,m_url,URL);
 	CC_SYNTHESIZE(cocos2d::Value,m_email,Email);
+	CC_SYNTHESIZE(long, m_hp,HP);
+	CC_SYNTHESIZE(long, m_level,Level);
 	
 	
 public:

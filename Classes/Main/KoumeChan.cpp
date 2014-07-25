@@ -537,9 +537,8 @@ void KoumeChan::destroySocketIO()
 {
 	if(m_OpenSocket && getSocketIO()){
 		getSocketIO()->disconnect();
-		CC_SAFE_RELEASE(m_SocketIO);
+		CC_SAFE_DELETE(m_SocketIO);
 		m_OpenSocket = false;
-		m_SocketIO = NULL;
 	}
 };
 

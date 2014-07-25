@@ -85,6 +85,7 @@ public:
 	void changeEnemyPW(int df);
 	
 	Force* getCurrentPhaseForce();
+	Friends* getCurrentPhasePlayer();
 	virtual MasterMap* getCurrentMap() = 0;
 	
 	
@@ -96,7 +97,7 @@ public:
 	void sayComboCount(int count);
 	void saySkill(long skillNo);
 	
-	virtual std::string getOwnUnitSpriteFrameName(int no)  = 0;
+	virtual std::string getOwnUnitSpriteFrameName(int no);
 	int getCurrentPlayerPower();
 	int getLBPower(int level);
 	int getLBLevel(int power);
@@ -175,8 +176,12 @@ protected:
 	bool checkTaskFinished();
 	
 	// ヘルプ関数
+	void addOwnUnitFrameName(std::string frameName);
+
 	
 	std::map<PUZZLE_TASK,bool> m_taskMap;
+	std::vector<std::string> m_ownUnitFrameName;
+	
 	void clearTask()	{ m_taskMap.clear();};
 	
 	CC_SYNTHESIZE_RETAIN(cocos2d::Node*, m_UI, UINode);
@@ -197,6 +202,8 @@ protected:
 	CC_SYNTHESIZE(long,m_player2HP ,Player2HP);
 	CC_SYNTHESIZE(long,m_player1Power ,Player1Power);
 	CC_SYNTHESIZE(long,m_player2Power ,Player2Power);
+	CC_SYNTHESIZE_RETAIN(Friends*,m_Player1,Player1);
+	CC_SYNTHESIZE_RETAIN(Friends*,m_Player2,Player2);
 	
 	CC_SYNTHESIZE_RETAIN(Force*, m_NeutralForce, NeutralForce);
 	CC_SYNTHESIZE_RETAIN(Force*, m_player1Force, Player1Force);

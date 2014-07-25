@@ -106,6 +106,7 @@ private:
 	// savedValue
 	CC_SYNTHESIZE(cocos2d::Value, m_rescueString, RescueString); // TODO: make and show
 	CC_SYNTHESIZE(cocos2d::Value, m_UUID, UUID);
+	CC_SYNTHESIZE(long,m_loginId,LoginId);
 	CC_SYNTHESIZE(bool, m_signIn, SignIn);
 
 	CC_SYNTHESIZE_RETAIN(FriendMatch*,m_friendMatch,FriendMatch);

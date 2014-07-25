@@ -29,15 +29,18 @@ QuestScene* QuestScene::create()
 	}
 	return pRet;
 }
-std::string QuestScene::getOwnUnitSpriteFrameName(int no)
-{
-	return StringUtils::format("");
-}
 
 bool QuestScene::init()
 {
 	setComPlayer(true);
 	if(PuzzleScene::init()){
+		setNeutralForce(KoumeChan::getInstance()->getForceMaster(0));
+		setPlayer1Force(KoumeChan::getInstance()->getForceMaster(1));
+		setPlayer2Force(KoumeChan::getInstance()->getForceMaster(2));
+		
+		setPlayer1(Friends::createMyData());
+		setPlayer2(Friends::createNPC(getCurrentNPC()));
+
 		SpriteFrameCache* cache = SpriteFrameCache::getInstance();
 		///////////////////////////////////////////////;
 		MinorQuest* minor = getCurrentMinorQuest();
@@ -45,12 +48,17 @@ bool QuestScene::init()
 		for(long l = 0;l < cnt ;l++){
 			QuestUnit* questUnit = (QuestUnit*)minor->getUnit(l);
 			MasterUnit* unit = KoumeChan::getInstance()->getUnitMaster(questUnit->getKeyNo());
-			for(int i = 0;i < unit->getSkillCount();i++){
-				BaseConditionMaster* unitSkill = unit->getSkill(i);
-				Skill* skill = KoumeChan::getInstance()->getSkillMaster(unitSkill->getKeyNo());
-				if(skill){
-					cache->addSpriteFramesWithFile(skill->getPLIST(), skill->getPNG());
+			if(unit){
+				if(unit->getForceNo() == getPlayer1Force()->getMasterNo()){
+					addOwnUnitFrameName(unit->getFrameName());
 				}
+				for(int i = 0;i < unit->getSkillCount();i++){
+					BaseConditionMaster* unitSkill = unit->getSkill(i);
+					Skill* skill = KoumeChan::getInstance()->getSkillMaster(unitSkill->getKeyNo());
+					if(skill){
+						cache->addSpriteFramesWithFile(skill->getPLIST(), skill->getPNG());
+					}
+				}				
 			}
 		}
 		///////////////////////////////////////////////
@@ -59,9 +67,6 @@ bool QuestScene::init()
 		setState(PUZZLE_INIT);
 		setPhase(PHASE_NONE);
 		setDlgState(CONNECT);
-		setNeutralForce(KoumeChan::getInstance()->getForceMaster(0));
-		setPlayer1Force(KoumeChan::getInstance()->getForceMaster(1));
-		setPlayer2Force(KoumeChan::getInstance()->getForceMaster(2));
 		
 		//////////////////////////////
 		Value url = KoumeChan::getInstance()->getProfileUrl();
