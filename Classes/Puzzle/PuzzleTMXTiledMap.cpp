@@ -40,6 +40,16 @@ bool PuzzleTMXTiledMap::init()
 			std::string mapFileName = map->getImage().asString();
 			if(mapFileName.length() > 0){
 				if(initWithTMXFile(mapFileName)){
+					Vector<Node*> arr = getChildren();
+					SpriteBatchNode* tileChild = NULL;
+					for(int i = 0;i < arr.size();i++){
+						tileChild = (SpriteBatchNode*)arr.at(i);
+						if(!tileChild){
+							break;
+						}
+						tileChild->getTexture()->setAntiAliasTexParameters();
+						
+					}
 					setMinX(getMapWidth());
 					setMaxX(0);
 					setMinY(getMapHeight());

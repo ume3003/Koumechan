@@ -9,6 +9,8 @@
 #include "PuzzleUnitManager.h"
 #include "PuzzleScene.h"
 #include "KoumeChan.h"
+#include "MagatamaUnit.h"
+#include "ShikigamiUnit.h"
 
 using namespace cocos2d;
 using namespace std;
@@ -28,6 +30,7 @@ PuzzleUnitManager::PuzzleUnitManager():m_scene(NULL),m_map(NULL),m_callfunc(NULL
 PuzzleUnitManager::~PuzzleUnitManager()
 {
 	m_unitSummary.clear();
+	m_unitKO.clear();
 	clearPuzzleChain();
 	m_chainManagers.clear();
 	m_candidates.clear();
@@ -69,6 +72,7 @@ void PuzzleUnitManager::initGame()
 		pScene->updateScore();
 	}
 	m_unitSummary.clear();
+	m_unitKO.clear();
 	
 	resetTag();
 	setDeleteUnitPos(DELETE_UNIT_POS_START);
@@ -151,7 +155,7 @@ void PuzzleUnitManager::clearUnits()
 	m_units.clear();
 }
 //	ユニットを生成し、マップのチャイルドへ
-PuzzleMapUnit* PuzzleUnitManager::addMapUnit(cocos2d::Point pos,long unitNo)
+PuzzleMapUnit* PuzzleUnitManager::addMapUnit(cocos2d::Point pos,long unitNo,int rank)
 {
 	PuzzleScene* pScene = (PuzzleScene*)getCurrentScene();
 	PuzzleTMXTiledMap* map = getMap();
@@ -166,7 +170,14 @@ PuzzleMapUnit* PuzzleUnitManager::addMapUnit(cocos2d::Point pos,long unitNo)
 //		unitNo = unitNo >= 0 ? unitNo : map->findUnitNoFromRate((rand() + 1) % map->getAppearanceRate());
 		unitNo = unitNo >= 0 ? unitNo : uNo;
 		if(unitNo >= 0){
-			mapUnit = PuzzleMapUnit::createWithData(unitNo,pos,getCurActionMgr(),getCurrentScene());
+			if(rank > 0){
+				long sNo = pScene->getShikigamiNo(getCurrentTag());
+				mapUnit = ShikigamiUnit::createWithData(unitNo,pos,getCurActionMgr(),getCurrentScene(),rank,sNo);
+			}
+			else{
+				mapUnit = MagatamaUnit::createWithData(unitNo,pos,getCurActionMgr(),getCurrentScene());
+				mapUnit->doWaitingAnimation();
+			}
 			if(mapUnit){
 				mapUnit->setFitScaleToParent(map->getCelWidth(),map->getCelHeight());
 				mapUnit->setPosition(map->getCenterPos(pos));
@@ -231,7 +242,13 @@ void PuzzleUnitManager::switchUnit(cocos2d::Point pos1, cocos2d::Point pos2)
 		m_units.insert(	i2,p1);
 	}
 }
-
+void PuzzleUnitManager::addUnitKOCount(long unitNo)
+{
+	if(m_unitKO.find(unitNo) == m_unitKO.end()){
+		m_unitKO[unitNo] = 0;
+	}
+	m_unitKO[unitNo] = m_unitKO[unitNo] + 1;
+}
 ///////////////////////////////////////////////////////////////
 //	削除ポジションに移動
 /////////////////////////////////////////////////////////////
@@ -737,23 +754,6 @@ bool PuzzleUnitManager::shuffleUnits()
 	vector<int> posBuffer;						// ポジションバッファ
 	PuzzleTMXTiledMap* pMap = getMap();
 	if(pMap){
-		/*
-		Map<int,PuzzleMapUnit*>::iterator it = m_units.begin();
-		while(it != m_units.end()){
-			int pos = (int)(*it).first;
-			PuzzleMapUnit* pUnit = (PuzzleMapUnit*)(*it).second;
-			if(pUnit){
-				long unitNo = pUnit->getUnitNo();
-				if(countBuffer.find(unitNo) == countBuffer.end()){
-					countBuffer.insert(map<int,int>::value_type(unitNo,0));
-				}
-				countBuffer[unitNo] = countBuffer[unitNo] + 1;
-				unitBuffer.pushBack(pUnit);
-				posBuffer.push_back(pos);
-			}
-			++it;
-		}
-		 */
 		for(int x = 0 ; x < pMap->getMapWidth();x++){
 			for(int y = 0 ; y < pMap->getMapHeight();y++){
 				int pos = xyToIdx(x, y);
@@ -780,9 +780,6 @@ bool PuzzleUnitManager::shuffleUnits()
 		}
 		if(baseCount > 2){
 			canShuffle = true;
-			/*
-			random_shuffle(unitBuffer.begin(), unitBuffer.end());			// ユニットの並びをランダムで変化
-			 */
 			for(int i = 0; i < unitBuffer.size();i++){
 				if(i % 3 == 0){
 					if(i + 3 < unitBuffer.size()){
@@ -1039,6 +1036,7 @@ void PuzzleUnitManager::limitBreak(int rank)
 				PuzzleMapUnit* pTarget = getUnit(nTgt);
 				if(pTarget){
 					pTarget->addCenterChainAnimation(getCurActionMgr(), 0, sidePOS, 0, 0, 0, scoreType);
+					addUnitKOCount(pSubject->getShikigamiNo());
 					setChainMarkandDelete(nTgt);
 				}
 			}
@@ -1234,7 +1232,7 @@ void PuzzleUnitManager::makeChainThree(PuzzleChain* chain,int chainCount)
 		else if(checkSideToForce(nForce)){	// 自軍
 			if(force){
 				nTgt	= findEnemyOnLine(force->getEnemyForceNo(),chain->getTop(), posC.x, posC.y);
-				nTgt = addAttackAction(nTgt,posC,chain,chainCount,sidePOS,pUnitC->getUnitNo());
+				nTgt = addAttackAction(nTgt,posC,chain,chainCount,sidePOS,pUnitC);
 				tPos = idxToPos(nTgt);
 				attackedTime	= MAX(3.0f,MAX(abs(posC.x - tPos.x),abs(posC.y - tPos.y)));
 			}
@@ -1310,7 +1308,7 @@ void PuzzleUnitManager::makeChainFour(PuzzleChain* chain,int chainCount)
 					else if(checkSideToForce(nForce)){	// 自軍
 						if(force){
 							nTgt	= findEnemyOnLine(force->getEnemyForceNo(),chain->getTop(), posC.x, posC.y);
-							nTgt = addAttackAction(nTgt,posC,chain,chainCount,sidePOS,pUnitC->getUnitNo());
+							nTgt = addAttackAction(nTgt,posC,chain,chainCount,sidePOS,pUnitC);
 							tPos = idxToPos(nTgt);
 							attackedTime	= MAX(3.0f,MAX(abs(posC.x - tPos.x),abs(posC.y - tPos.y)));
 						}
@@ -1376,7 +1374,7 @@ void PuzzleUnitManager::makeChainFive(PuzzleChain* chain,int chainCount)
 				else if(checkSideToForce(nForce)){	// 自軍
 					if(force){
 						nTgt	= findEnemyOnLine(force->getEnemyForceNo(),chain->getTop(), posC.x, posC.y);
-						nTgt = addAttackAction(nTgt,posC,chain,chainCount,sidePOS,pUnitC->getUnitNo());
+						nTgt = addAttackAction(nTgt,posC,chain,chainCount,sidePOS,pUnitC);
 						tPos = idxToPos(nTgt);
 						attackedTime	= MAX(3.0f,MAX(abs(posC.x - tPos.x),abs(posC.y - tPos.y)));
 					}
@@ -1444,7 +1442,7 @@ void PuzzleUnitManager::makeChainCross(PuzzleChain* chain,int chainCount)
 					else if(checkSideToForce(nForce)){	// 自軍
 						if(force){
 							nTgt	= findEnemyOnLine(force->getEnemyForceNo(),chain->getTop(), posC.x, posC.y);
-							nTgt = addAttackAction(nTgt,posC,chain,chainCount,sidePOS,pUnitC->getUnitNo());
+							nTgt = addAttackAction(nTgt,posC,chain,chainCount,sidePOS,pUnitC);
 							tPos = idxToPos(nTgt);
 							attackedTime	= MAX(3.0f,MAX(abs(posC.x - tPos.x),abs(posC.y - tPos.y)));
 						}
@@ -1482,7 +1480,7 @@ void PuzzleUnitManager::makeChainCross(PuzzleChain* chain,int chainCount)
 	}
 };
 
-int PuzzleUnitManager::addAttackAction(int nTgt,Point posC,PuzzleChain* chain,int chainCount,Point sidePOS,long unitNo)
+int PuzzleUnitManager::addAttackAction(int nTgt,Point posC,PuzzleChain* chain,int chainCount,Point sidePOS,PuzzleMapUnit* pUnit)
 {
 	PuzzleMapUnit* pTarget = getUnit(nTgt);
 	if(pTarget){
@@ -1491,8 +1489,11 @@ int PuzzleUnitManager::addAttackAction(int nTgt,Point posC,PuzzleChain* chain,in
 		pTarget->addAttackChainAnimation(getCurActionMgr(), chainCount, sidePOS,attackedTime);
 		setChainMarkandDelete(nTgt);
 		
-		PuzzleMapUnit* pElite = addMapUnit(tPos,unitNo);
-		pElite->setRank(1);
+		PuzzleMapUnit* pElite = addMapUnit(tPos,pUnit->getUnitNo(),1);
+		if(pUnit->getShikigamiNo() >= 0){
+			addUnitKOCount(pUnit->getShikigamiNo());
+		}
+//		pElite->setRank(1);
 		pElite->addEliteCreateAnimation(getCurActionMgr(), chainCount,attackedTime );
 		
 	}
@@ -1531,14 +1532,14 @@ void PuzzleUnitManager::setSelectFrame(int idx)
 		Size size	= pTarget->getScaledContentSize();
 		if(!sp){
 			sp = Sprite::createWithSpriteFrameName("frame0.png");
-			sp->setAnchorPoint(Point(0,0));
+			sp->setAnchorPoint(Point(0.5,0.5));
 			sp->setContentSize(size);
 			map->addChild(sp, 99,PuzzleTMXTiledMap::TAG_FRAME);
 		}
 		sp->setVisible(true);
 		Point pos = pTarget->getPosition();
-		sp->setPosition(Point(pos.x - size.width / 2,pos.y - size.height / 2));
-
+//		sp->setPosition(Point(pos.x - size.width / 2,pos.y - size.height / 2));
+		sp->setPosition(map->getCenterPos(idxToPos(idx)));
 		// LB状況とスキルの表示
 		if(pTarget->getRank() > 0){
 			showLimitBreakTarget(idx);

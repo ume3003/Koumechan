@@ -13,6 +13,7 @@
 #include "MinorQuest.h"
 #include "PuzzleUILayer.h"
 #include "QuestTMXMap.h"
+#include "SSAnimationMgr.h"
 
 using namespace cocos2d;
 using namespace std;
@@ -42,6 +43,8 @@ bool QuestScene::init()
 		setPlayer2(Friends::createNPC(getCurrentNPC()));
 
 		SpriteFrameCache* cache = SpriteFrameCache::getInstance();
+		SSAnimationMgr* ssMgr = SSAnimationMgr::getInstance();
+		Value path = Value("wait/");
 		///////////////////////////////////////////////;
 		MinorQuest* minor = getCurrentMinorQuest();
 		long cnt = minor->getUnitCount();
@@ -49,8 +52,26 @@ bool QuestScene::init()
 			QuestUnit* questUnit = (QuestUnit*)minor->getUnit(l);
 			MasterUnit* unit = KoumeChan::getInstance()->getUnitMaster(questUnit->getKeyNo());
 			if(unit){
+				///////////////SSの読込
+				if(questUnit->getVal() == 0){
+					// 式神
+				}
+				else{
+					Value fName0 =Value(StringUtils::format("magaWait%s.ssba",V2C(unit->getColor())));
+					Value fName1 =Value(StringUtils::format("magaDele%s.ssba",V2C(unit->getColor())));
+					ssMgr->loadAnimation(unit->getMasterNo(),PuzzleMapUnit::WAIT_ANIME	,fName0,path);
+					ssMgr->loadAnimation(unit->getMasterNo(),PuzzleMapUnit::DELETE_ANIME,fName1,path);
+				}
+				
+				///////////////
 				if(unit->getForceNo() == getPlayer1Force()->getMasterNo()){
-					addOwnUnitFrameName(unit->getFrameName());
+					addOwnUnitFrameName(unit->getTextureName());
+					if(questUnit->getVal() == 0){
+						addShikigami(unit->getMasterNo(), PuzzleScene::PHASE_PLAYER_1);
+					}
+				}
+				else if(questUnit->getVal() == 0){
+					addShikigami(unit->getMasterNo(), PuzzleScene::PHASE_PLAYER_2);
 				}
 				for(int i = 0;i < unit->getSkillCount();i++){
 					BaseConditionMaster* unitSkill = unit->getSkill(i);
@@ -195,6 +216,19 @@ void QuestScene::sayWords(Words::WORDS word)
 void QuestScene::finishGame()
 {
 	sayWords(getPlayer1HP() <= 0 ? Words::WIN : Words::LOSE);
+	
+	MinorQuest* minor = getCurrentMinorQuest();
+	PuzzleUnitManager* mgr = PuzzleUnitManager::getInstance();
+	long cnt = minor->getUnitCount();
+	log("++++++++++++++++++++++++++++++++++++++");
+	for(long l = 0;l < cnt ;l++){
+		QuestUnit* questUnit = (QuestUnit*)minor->getUnit(l);
+		MasterUnit* unit = KoumeChan::getInstance()->getUnitMaster(questUnit->getKeyNo());
+		long count = mgr->getUnitKOCount(questUnit->getKeyNo());
+		log("Unit %ld %s KO %ld",unit->getMasterNo(),V2C(unit->getName()),count);
+	}
+	log("++++++++++++++++++++++++++++++++++++++");
+	
 	winLoseDlg();
 }
 

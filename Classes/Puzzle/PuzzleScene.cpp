@@ -900,5 +900,44 @@ std::string PuzzleScene::getOwnUnitSpriteFrameName(int no)
 	return "";
 };
 
+void PuzzleScene::addShikigami(long sNo,PUZZLE_PHASE phase)
+{
+	switch(phase){
+		case PHASE_PLAYER_1:
+			m_player1Shikigami.push_back(sNo);
+			break;
+		case PHASE_PLAYER_2:
+			m_player2Shikigami.push_back(sNo);
+			break;
+		default:
+			break;
+	}
+};
+long PuzzleScene::getShikigamiNo(long tag)
+{
+
+	PUZZLE_PHASE phase = getPhase();
+	long sNo = -1;
+	int idx = 0;
+	switch(phase){
+		case PHASE_PLAYER_1:
+			if(m_player1Shikigami.size() > 0){
+				idx = tag % m_player1Shikigami.size();
+				sNo = m_player1Shikigami.at(idx);
+			}
+			break;
+		case PHASE_PLAYER_2:
+			if(m_player2Shikigami.size() > 0){
+				idx = tag % m_player2Shikigami.size();
+				sNo = m_player2Shikigami.at(idx);
+			}
+			break;
+		default:
+			break;
+	}
+	return sNo;
+};
+
+
 
 

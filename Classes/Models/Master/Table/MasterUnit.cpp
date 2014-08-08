@@ -79,10 +79,15 @@ std::string MasterUnit::getFrameName()
 {
 	return StringUtils::format("%s%s0.png",V2C(getImage()),V2C(getColor()));
 }
+std::string MasterUnit::getTextureName()
+{
+	return StringUtils::format("%s%s.png",V2C(getImage()),V2C(getColor()));
+}
 std::string MasterUnit::getSpecialFrameName()
 {
 	return StringUtils::format("%s%s1.png",V2C(getImage()),V2C(getColor()));
 }
+
 void MasterUnit::clearChild(BaseMaster::MASTERNO masterNo)
 {
 	if(masterNo == BaseMaster::SKILL_MASTER){

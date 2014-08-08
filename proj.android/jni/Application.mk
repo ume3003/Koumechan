@@ -7,7 +7,8 @@ APP_OPTIM := debug
 
 ifeq ($(APP_OPTIM),debug)
 	  APP_CPPFLAGS := -frtti -DCOCOS2D_DEBUG=1 -std=c++11 -fsigned-char -Wno-literal-suffix -Wno-deprecated-declarations
-	    LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -ldl -ldebug -llog
+	  #APP_CPPFLAGS := -frtti -DCOCOS2D_DEBUG=1 -std=c++11 -fsigned-char -Wno-literal-suffix -Wno-deprecated-declarations
+#	    LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -ldl -ldebug -llog
 	else
 	  APP_CPPFLAGS := -frtti -DCOCOS2D_DEBUG=0 -std=c++11 -fsigned-char -Wno-literal-suffix  -Wno-deprecated-declarations
 	    LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -ldl -llog

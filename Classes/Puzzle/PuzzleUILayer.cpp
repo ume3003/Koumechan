@@ -302,7 +302,7 @@ void PuzzleUILayer::setUnitSprite()
 		m_unit1->setVisible(false);
 	}
 	else{
-		m_unit1->setSpriteFrame(frameName1);
+		m_unit1->setTexture(frameName1);
 		Size sizeNew = m_unit1->getContentSize();
 		m_unit1->setScale(sizeOrg.width / sizeNew.width / 2);
 		m_unit1->setAnchorPoint(Vec2(0,1));
@@ -312,7 +312,7 @@ void PuzzleUILayer::setUnitSprite()
 		m_unit2->setVisible(false);
 	}
 	else{
-		m_unit2->setSpriteFrame(frameName2);
+		m_unit2->setTexture(frameName2);
 		Size sizeNew = m_unit2->getContentSize();
 		m_unit2->setScale(sizeOrg.width / sizeNew.width / 2);
 		m_unit2->setAnchorPoint(Vec2(0,1));

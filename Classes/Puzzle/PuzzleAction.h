@@ -33,7 +33,8 @@ public:
 		PZ_ATTACK,
 		PZ_EXPLOSION,
 		PZ_SCORE,
-		PZ_ELITE_SCORE
+		PZ_ELITE_SCORE,
+		PZ_ELITE_APPREAR
 	};
 	static PuzzleAction* create(PZ_ACTION action,cocos2d::Point pos,float duration,BaseDamage::BD_TYPE nScore = BaseDamage::THREE_OWN);
 	static PuzzleAction* createWithJson(Json* json);

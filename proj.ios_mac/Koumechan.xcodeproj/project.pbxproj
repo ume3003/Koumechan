@@ -80,8 +80,14 @@
 		7541CF18196B8218000D647D /* FriendList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7541CF16196B8218000D647D /* FriendList.cpp */; };
 		7541CF1B196BE22B000D647D /* FriendMatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7541CF19196BE22B000D647D /* FriendMatch.cpp */; };
 		7541CF1E196BEBAA000D647D /* FriendMatchList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7541CF1C196BEBAA000D647D /* FriendMatchList.cpp */; };
+		75566D3219887A58009D9758 /* SSAnimationData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75566D2C19887A58009D9758 /* SSAnimationData.cpp */; };
+		75566D3319887A58009D9758 /* SSPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75566D2E19887A58009D9758 /* SSPlayer.cpp */; };
+		75566D35198880D3009D9758 /* magatama in Resources */ = {isa = PBXBuildFile; fileRef = 75566D34198880D3009D9758 /* magatama */; };
+		75566D3819888214009D9758 /* MagatamaUnit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75566D3619888214009D9758 /* MagatamaUnit.cpp */; };
+		75566D3B198891B1009D9758 /* ShikigamiUnit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75566D39198891B1009D9758 /* ShikigamiUnit.cpp */; };
+		75566D3F1989E5F3009D9758 /* SSAnimationMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75566D3D1989E5F3009D9758 /* SSAnimationMgr.cpp */; };
+		75566D41198A1E70009D9758 /* wait in Resources */ = {isa = PBXBuildFile; fileRef = 75566D40198A1E70009D9758 /* wait */; };
 		7562F3B71966A2D80043AC8B /* skill in Resources */ = {isa = PBXBuildFile; fileRef = 7562F3B61966A2D80043AC8B /* skill */; };
-		7562F3B91966A2F50043AC8B /* tank.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7562F3B81966A2F50043AC8B /* tank.plist */; };
 		7562F3BB1966A7430043AC8B /* skill.png in Resources */ = {isa = PBXBuildFile; fileRef = 7562F3BA1966A7430043AC8B /* skill.png */; };
 		75A29D6E193EB5B200B7700D /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A29D6D193EB5B200B7700D /* AddressBook.framework */; };
 		75A29D70193EB5C000B7700D /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A29D6F193EB5C000B7700D /* CoreText.framework */; };
@@ -414,8 +420,21 @@
 		7541CF1A196BE22B000D647D /* FriendMatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendMatch.h; sourceTree = "<group>"; };
 		7541CF1C196BEBAA000D647D /* FriendMatchList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FriendMatchList.cpp; sourceTree = "<group>"; };
 		7541CF1D196BEBAA000D647D /* FriendMatchList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendMatchList.h; sourceTree = "<group>"; };
+		75566D2C19887A58009D9758 /* SSAnimationData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SSAnimationData.cpp; path = ../Classes/SpriteStudio/SSAnimationData.cpp; sourceTree = "<group>"; };
+		75566D2D19887A58009D9758 /* SSAnimationData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSAnimationData.h; path = ../Classes/SpriteStudio/SSAnimationData.h; sourceTree = "<group>"; };
+		75566D2E19887A58009D9758 /* SSPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SSPlayer.cpp; path = ../Classes/SpriteStudio/SSPlayer.cpp; sourceTree = "<group>"; };
+		75566D2F19887A58009D9758 /* SSPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSPlayer.h; path = ../Classes/SpriteStudio/SSPlayer.h; sourceTree = "<group>"; };
+		75566D3019887A58009D9758 /* SSPlayerData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSPlayerData.h; path = ../Classes/SpriteStudio/SSPlayerData.h; sourceTree = "<group>"; };
+		75566D3119887A58009D9758 /* ssShader_frag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ssShader_frag.h; path = ../Classes/SpriteStudio/ssShader_frag.h; sourceTree = "<group>"; };
+		75566D34198880D3009D9758 /* magatama */ = {isa = PBXFileReference; lastKnownFileType = folder; path = magatama; sourceTree = "<group>"; };
+		75566D3619888214009D9758 /* MagatamaUnit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MagatamaUnit.cpp; sourceTree = "<group>"; };
+		75566D3719888214009D9758 /* MagatamaUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagatamaUnit.h; sourceTree = "<group>"; };
+		75566D39198891B1009D9758 /* ShikigamiUnit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShikigamiUnit.cpp; sourceTree = "<group>"; };
+		75566D3A198891B1009D9758 /* ShikigamiUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShikigamiUnit.h; sourceTree = "<group>"; };
+		75566D3D1989E5F3009D9758 /* SSAnimationMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SSAnimationMgr.cpp; path = ../Classes/SpriteStudio/SSAnimationMgr.cpp; sourceTree = "<group>"; };
+		75566D3E1989E5F3009D9758 /* SSAnimationMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSAnimationMgr.h; path = ../Classes/SpriteStudio/SSAnimationMgr.h; sourceTree = "<group>"; };
+		75566D40198A1E70009D9758 /* wait */ = {isa = PBXFileReference; lastKnownFileType = folder; path = wait; sourceTree = "<group>"; };
 		7562F3B61966A2D80043AC8B /* skill */ = {isa = PBXFileReference; lastKnownFileType = folder; path = skill; sourceTree = "<group>"; };
-		7562F3B81966A2F50043AC8B /* tank.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = tank.plist; path = ../Resources/skill/tank.plist; sourceTree = "<group>"; };
 		7562F3BA1966A7430043AC8B /* skill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skill.png; sourceTree = "<group>"; };
 		75A29D6D193EB5B200B7700D /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/AddressBook.framework; sourceTree = DEVELOPER_DIR; };
 		75A29D6F193EB5C000B7700D /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
@@ -697,6 +716,7 @@
 		15AA9C4015B7EC450033D6C2 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				75566D2919887A47009D9758 /* SpriteStudio */,
 				75A29EB0193EB7F200B7700D /* Android */,
 				75A29E72193EB77600B7700D /* Puzzle */,
 				75A29E89193EB77600B7700D /* Utils */,
@@ -740,7 +760,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				7562F3B81966A2F50043AC8B /* tank.plist */,
 				75A29D7D193EB66300B7700D /* GoogleOpenSource.framework */,
 				75A29D7E193EB66300B7700D /* GooglePlus.bundle */,
 				75A29D7F193EB66300B7700D /* GooglePlus.framework */,
@@ -853,6 +872,21 @@
 				7541CF08196AA524000D647D /* QuestTMXMap.h */,
 			);
 			name = Quest;
+			sourceTree = "<group>";
+		};
+		75566D2919887A47009D9758 /* SpriteStudio */ = {
+			isa = PBXGroup;
+			children = (
+				75566D2C19887A58009D9758 /* SSAnimationData.cpp */,
+				75566D2D19887A58009D9758 /* SSAnimationData.h */,
+				75566D2E19887A58009D9758 /* SSPlayer.cpp */,
+				75566D2F19887A58009D9758 /* SSPlayer.h */,
+				75566D3019887A58009D9758 /* SSPlayerData.h */,
+				75566D3119887A58009D9758 /* ssShader_frag.h */,
+				75566D3D1989E5F3009D9758 /* SSAnimationMgr.cpp */,
+				75566D3E1989E5F3009D9758 /* SSAnimationMgr.h */,
+			);
+			name = SpriteStudio;
 			sourceTree = "<group>";
 		};
 		75A29DBA193EB75A00B7700D /* Main */ = {
@@ -1131,6 +1165,10 @@
 				75A29E86193EB77600B7700D /* PuzzleUILayerLoader.h */,
 				75A29E87193EB77600B7700D /* PuzzleUnitManager.cpp */,
 				75A29E88193EB77600B7700D /* PuzzleUnitManager.h */,
+				75566D3619888214009D9758 /* MagatamaUnit.cpp */,
+				75566D3719888214009D9758 /* MagatamaUnit.h */,
+				75566D39198891B1009D9758 /* ShikigamiUnit.cpp */,
+				75566D3A198891B1009D9758 /* ShikigamiUnit.h */,
 			);
 			name = Puzzle;
 			path = ../Classes/Puzzle;
@@ -1178,6 +1216,8 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				75566D40198A1E70009D9758 /* wait */,
+				75566D34198880D3009D9758 /* magatama */,
 				7562F3BA1966A7430043AC8B /* skill.png */,
 				7562F3B61966A2D80043AC8B /* skill */,
 				75D338CC1963E2270049E5B7 /* frame.png */,
@@ -1377,7 +1417,6 @@
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
 				753220571960F10400C0B1F5 /* emotion.plist in Resources */,
-				7562F3B91966A2F50043AC8B /* tank.plist in Resources */,
 				1AFAF8BD16D35E4900DB1158 /* CloseSelected.png in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
@@ -1391,8 +1430,10 @@
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
 				50EF629717ECD46A001EB2F8 /* Icon-58.png in Resources */,
+				75566D35198880D3009D9758 /* magatama in Resources */,
 				753220581960F10400C0B1F5 /* emotion.png in Resources */,
 				7562F3BB1966A7430043AC8B /* skill.png in Resources */,
+				75566D41198A1E70009D9758 /* wait in Resources */,
 				75A29D86193EB66300B7700D /* OpenSource in Resources */,
 				75A29D87193EB66300B7700D /* PlayGameServices.bundle in Resources */,
 			);
@@ -1419,8 +1460,12 @@
 				75A29E50193EB76800B7700D /* MajorQuestManager.cpp in Sources */,
 				75A29E46193EB76800B7700D /* BaseMaster.cpp in Sources */,
 				75A29E68193EB76800B7700D /* MinorQuest.cpp in Sources */,
+				75566D3F1989E5F3009D9758 /* SSAnimationMgr.cpp in Sources */,
+				75566D3B198891B1009D9758 /* ShikigamiUnit.cpp in Sources */,
 				75322052195C3AA000C0B1F5 /* BaseDamageManager.cpp in Sources */,
+				75566D3219887A58009D9758 /* SSAnimationData.cpp in Sources */,
 				75A29EA6193EB77600B7700D /* PuzzleUILayer.cpp in Sources */,
+				75566D3319887A58009D9758 /* SSPlayer.cpp in Sources */,
 				75A29E47193EB76800B7700D /* BaseMasterManager.cpp in Sources */,
 				7541CF18196B8218000D647D /* FriendList.cpp in Sources */,
 				75A29E6B193EB76800B7700D /* QuestReward.cpp in Sources */,
@@ -1484,6 +1529,7 @@
 				75A29E6A193EB76800B7700D /* QuestClear.cpp in Sources */,
 				75A29EAD193EB77600B7700D /* KcSprite.cpp in Sources */,
 				7532203F19580EBE00C0B1F5 /* MasterNPCManager.cpp in Sources */,
+				75566D3819888214009D9758 /* MagatamaUnit.cpp in Sources */,
 				75A29EA4193EB77600B7700D /* PuzzleScene.cpp in Sources */,
 				75313C77196A8D6700D94022 /* CompetitionScene.cpp in Sources */,
 				7541CF1B196BE22B000D647D /* FriendMatch.cpp in Sources */,

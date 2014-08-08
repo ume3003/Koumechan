@@ -10,9 +10,10 @@
 #define __koumeChan__KcSprite__
 
 #include "cocos2d.h"
+#include "SSPlayer.h"
 
 
-class KcSprite : public cocos2d::Sprite
+class KcSprite : public SSPlayer
 {
 public:
 	virtual void onSecTimer()	{};
@@ -29,6 +30,6 @@ protected:
 	virtual void onKCTouchCancelled(cocos2d::Touch *pTouch, cocos2d::Event *pEvent) = 0;
 	
 	CC_SYNTHESIZE_RETAIN(cocos2d::EventListenerTouchOneByOne*, m_listener, Listener);
-	
+	void registerTouchEvent();
 };
 #endif /* defined(__koumeChan__KcSprite__) */

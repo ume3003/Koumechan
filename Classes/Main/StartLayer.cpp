@@ -12,12 +12,13 @@
 #include "KCDef.h"
 #include "JsonKeyString.h"
 #include "StartScene.h"
+#include "SSAnimationMgr.h"
 
 using namespace cocos2d;
 using namespace cocosbuilder;
 using namespace cocos2d::extension;
 
-StartLayer::StartLayer()
+StartLayer::StartLayer() : ssaData(NULL),ssPlayer(NULL)
 {
 	
 };
@@ -111,6 +112,18 @@ void StartLayer::onEnter()
 	getChildByTag(KTAG_USERNAME)->setPosition(Point(pos.x,pos.y - KoumeChan::getInstance()->getDiffHeight()));
 	refreshSignInButton();
 	log("---------------------vKoumeChan StartLayer onEnter---------------------");
+	
+	SSAnimationMgr* ssMgr = SSAnimationMgr::getInstance();
+	Value path = Value("wait/");
+	
+	Value fName0 =Value(StringUtils::format("magaWait%s.ssba","_brown"));
+	Value fName1 =Value(StringUtils::format("magaDele%s.ssba","_brown"));
+	ssMgr->loadAnimation(0,0,fName0,path);
+	ssMgr->loadAnimation(0,1,fName1,path);
+	SSAnimationData* data = ssMgr->getAnimation(0, 0);
+	setSSPlayer(SSPlayer::create(data->getSSData(), data->getImageList(),0));
+	getSSPlayer()->setPosition(pos);
+	addChild(getSSPlayer());
 };
 
 void StartLayer::refreshSignInButton()

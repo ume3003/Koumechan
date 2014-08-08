@@ -64,7 +64,7 @@ public:
 	void			removeDeletedUnit();
 	void			unitDeleted(cocos2d::Point pos);
 	// パズルユニット管理用
-	PuzzleMapUnit*	addMapUnit(cocos2d::Point pos,int long = -1);
+	PuzzleMapUnit*	addMapUnit(cocos2d::Point pos,long unitNo = -1,int rank = 0);
 	// ユニット配布
 	void			dealUnit();
 	// ユニット落下処理
@@ -107,6 +107,10 @@ public:
 	int comFindEliteUnit();
 
 	bool checkAllElite(PuzzleChain* chain);
+	
+	int getUnitKOSize()	{ return m_unitKO.size();};
+	int getUnitKOCount(long unitNo)		{ return m_unitKO.find(unitNo) == m_unitKO.end() ? 0 : m_unitKO[unitNo];};
+	void addUnitKOCount(long unitNo);
 protected:
 	PuzzleUnitManager();
 	virtual ~PuzzleUnitManager();
@@ -142,7 +146,7 @@ protected:
 	void setChainMark(int idx);
 	
 	int findOutBoundsTarget(bool bTop,cocos2d::Point basePos);
-	int addAttackAction(int nTgt,cocos2d::Point posC,PuzzleChain* chain,int chainCount,cocos2d::Point sidePOS,long unitNo);
+	int addAttackAction(int nTgt,cocos2d::Point posC,PuzzleChain* chain,int chainCount,cocos2d::Point sidePOS,PuzzleMapUnit* unit);
 	PuzzleTMXTiledMap::MAP_POS getSidePOS();
 	
 	static PuzzleUnitManager* m_instance;
@@ -167,6 +171,7 @@ protected:
 	CC_SYNTHESIZE(std::list<int>::iterator ,m_currentHint,CurrentHint);
 	CC_SYNTHESIZE(long,m_seed,Seed);
 	std::map<long,int> m_unitSummary;
+	std::map<long,int> m_unitKO;
 	
 };
 

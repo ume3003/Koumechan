@@ -45,7 +45,13 @@ bool CompetitionScene::init()
 					MasterUnit* unit = KoumeChan::getInstance()->getUnitMaster(scenarioUnit->getKeyNo());
 					if(unit){
 						if(unit->getForceNo() == getPlayer1Force()->getMasterNo()){
-							addOwnUnitFrameName(unit->getFrameName());
+							addOwnUnitFrameName(unit->getTextureName());
+							if(scenarioUnit->getVal() == 0){
+								addShikigami(unit->getMasterNo(), PuzzleScene::PHASE_PLAYER_1);
+							}
+						}
+						else if(scenarioUnit->getVal() == 0){
+							addShikigami(unit->getMasterNo(), PuzzleScene::PHASE_PLAYER_2);
 						}
 						for(int i = 0;i < unit->getSkillCount();i++){
 							BaseConditionMaster* unitSkill = unit->getSkill(i);
@@ -122,6 +128,22 @@ void CompetitionScene::changePhaseDetail()
 
 void CompetitionScene::finishGame()
 {
+	PuzzleUnitManager* mgr = PuzzleUnitManager::getInstance();
+	FriendMatch* fm = KoumeChan::getInstance()->getFriendMatch();
+	if(fm && mgr){
+		Scenario* sce = KoumeChan::getInstance()->getScenarioMaster(fm->getScenario());
+		if(sce){
+			long cnt = sce->getUnitCount();
+			log("++++++++++++++++++++++++++++++++++++++");
+			for(long l = 0;l < cnt ;l++){
+				ScenarioUnit* scenarioUnit = (ScenarioUnit*)sce->getUnit(l);
+				MasterUnit* unit = KoumeChan::getInstance()->getUnitMaster(scenarioUnit->getKeyNo());
+				long count = mgr->getUnitKOCount(scenarioUnit->getKeyNo());
+				log("Unit %ld %s KO %ld",unit->getMasterNo(),V2C(unit->getName()),count);
+			}
+		}
+		log("++++++++++++++++++++++++++++++++++++++");
+	}
 	winLoseDlg();
 }
 

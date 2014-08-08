@@ -20,6 +20,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     if(!glview) {
         glview = GLView::create("KoumeChan");
         director->setOpenGLView(glview);
+		director->setProjection(Director::Projection::_2D);
+		director->setDepthTest(false);
     }
 
 	glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);

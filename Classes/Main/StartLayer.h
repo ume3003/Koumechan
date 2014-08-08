@@ -14,6 +14,8 @@
 #include "Native.h"
 #include "network/HttpClient.h"
 #include "cocosbuilder/cocosbuilder.h"
+#include "SSPlayer.h"
+#include "SSAnimationData.h"
 
 class StartLayer : public KcLayer , public cocosbuilder::CCBSelectorResolver ,public cocosbuilder::CCBMemberVariableAssigner
 {
@@ -40,7 +42,8 @@ public:
     virtual void onEnter();
 	virtual void onEnterTransitionDidFinish();
 	
-	
+	CC_SYNTHESIZE_RETAIN(SSAnimationData*, ssaData,SSData);
+	CC_SYNTHESIZE_RETAIN(SSPlayer*, ssPlayer, SSPlayer);
 	
 public:
 	StartLayer();

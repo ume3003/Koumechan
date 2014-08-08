@@ -22,21 +22,24 @@ KcSprite::~KcSprite()
 {
     CC_SAFE_RELEASE(m_listener);
 };
-
+void KcSprite::registerTouchEvent()
+{
+	// Register Touch Event
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->setSwallowTouches(false);
+	
+	listener->onTouchBegan = CC_CALLBACK_2(KcSprite::onKCTouchBegan, this);
+	listener->onTouchMoved = CC_CALLBACK_2(KcSprite::onKCTouchMoved, this);
+	listener->onTouchEnded = CC_CALLBACK_2(KcSprite::onKCTouchEnded, this);
+	listener->onTouchCancelled = CC_CALLBACK_2(KcSprite::onKCTouchCancelled, this);
+	getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+	setListener(listener);
+	
+}
 bool KcSprite::init()
 {
-    if(Sprite::init()){
-        // Register Touch Event
-		auto listener = EventListenerTouchOneByOne::create();
-		listener->setSwallowTouches(false);
-        
-		listener->onTouchBegan = CC_CALLBACK_2(KcSprite::onKCTouchBegan, this);
-		listener->onTouchMoved = CC_CALLBACK_2(KcSprite::onKCTouchMoved, this);
-		listener->onTouchEnded = CC_CALLBACK_2(KcSprite::onKCTouchEnded, this);
-		listener->onTouchCancelled = CC_CALLBACK_2(KcSprite::onKCTouchCancelled, this);
-		getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
-		setListener(listener);
-        
+    if(SSPlayer::init()){
+		registerTouchEvent();
         return true;
     }
     return false;
@@ -48,5 +51,5 @@ void KcSprite::onExit()
 		getEventDispatcher()->removeEventListener(getListener());
 		setListener(NULL);
 	}
-    Sprite::onExit();
+    SSPlayer::onExit();
 };

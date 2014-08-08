@@ -20,6 +20,7 @@ PuzzleMapUnit::PuzzleMapUnit() : m_scene(NULL),m_frameSprite(NULL),m_hintSprite(
 {
 	setUnitNo(-1);
 	setRank(0);
+	setShikigamiNo(-1L);
 	setPos(Point(-1,-1));
 	setScaleToCell(1.0f);
 	setDragMode(KDRAG_NONE);
@@ -33,18 +34,28 @@ PuzzleMapUnit::~PuzzleMapUnit()
 	CC_SAFE_RELEASE(m_frameSprite);
 	CC_SAFE_RELEASE(m_hintSprite);
 }
-bool PuzzleMapUnit::initWithData(long unitNo,Point pos,int actionOrder,Scene* scene)
+bool PuzzleMapUnit::setupSprite()
+{
+	MasterUnit* unit = getUnit();
+	if(unit ){
+		std::string fileName = unit->getFrameName();
+		setSpriteFrame(fileName);
+		setAnchorPoint(Point(0.5,0.5));
+		setScale(0.0f);
+		return true;
+	}
+	return false;
+}
+
+bool PuzzleMapUnit::initWithData(long unitNo,Point pos,int actionOrder,Scene* scene,int rank,long shikigamiNo)
 {
 	if(KcSprite::init()){
 		setUnitNo(unitNo);
 		setPos(pos);
-		MasterUnit* unit = getUnit();
-		if(unit ){
-			std::string fileName = unit->getFrameName();
-			setSpriteFrame(fileName);
+		setRank(rank);
+		setShikigamiNo(shikigamiNo);
+		if(setupSprite()){
 			setVisible(false);
-			setAnchorPoint(Point(0.5,0.5));
-			setScale(0.0f);
 			setChainMark(false);
 			setDeleted(false);
 			setScene(scene);
@@ -76,10 +87,10 @@ cocos2d::Node* PuzzleMapUnit::getParentMap()
 	 */
 }
 
-PuzzleMapUnit* PuzzleMapUnit::createWithData(long unitNo,Point pos,int actionOrder,Scene* scene)
+PuzzleMapUnit* PuzzleMapUnit::createWithData(long unitNo,Point pos,int actionOrder,Scene* scene,int rank,long shikigamiNo)
 {
 	PuzzleMapUnit* pRet = new PuzzleMapUnit();
-	if(pRet && pRet->initWithData(unitNo,pos,actionOrder,scene)){
+	if(pRet && pRet->initWithData(unitNo,pos,actionOrder,scene,rank,shikigamiNo)){
 		pRet->autorelease();
 	}
 	else{
@@ -194,8 +205,17 @@ int PuzzleMapUnit::getDistance(PuzzleMapUnit *pDist)
 
 MasterUnit* PuzzleMapUnit::getUnit()
 {
+	if(getShikigamiUnit()){
+		return getShikigamiUnit();
+	}
 	return KoumeChan::getInstance()->getUnitMaster(getUnitNo());
 };
+
+MasterUnit* PuzzleMapUnit::getShikigamiUnit()
+{
+	return KoumeChan::getInstance()->getUnitMaster(getShikigamiNo());
+};
+
 
 long PuzzleMapUnit::getForceNo()
 {
@@ -214,7 +234,20 @@ void PuzzleMapUnit::addAction(int actionOrder,PuzzleAction* action)
 	}
 	mgr->addAction(action);
 };
-
+FiniteTimeAction* PuzzleMapUnit::appearAction(PuzzleAction* action)
+{
+	return ScaleTo::create(action->getDuration(),getScaleToCell());
+};
+FiniteTimeAction* PuzzleMapUnit::desappearAction(PuzzleAction* action)
+{
+	return ScaleTo::create(action->getDuration(),0.0f);
+};
+FiniteTimeAction* PuzzleMapUnit::createAction(PuzzleAction *action)
+{
+	return CallFunc::create([this]{
+		this->setVisible(true);
+	});
+}
 bool PuzzleMapUnit::doAction(int actionOrder,CallFunc* callback)
 {
 	PuzzleActionManager* mgr = getActionManager(actionOrder);
@@ -230,22 +263,13 @@ bool PuzzleMapUnit::doAction(int actionOrder,CallFunc* callback)
 				Point posCen = map->getCenterPos(posMap);
 				switch(action->getAction()){
 					case PuzzleAction::PZ_CREATE:
-						actions.pushBack(CallFunc::create([this]{
-							if(this->getRank() != 0){
-								Sprite* sp = Emotion::getInstance()->getNumberSprite(this->getRank());
-								Size s = this->getContentSize();
-								sp->setScale(1 / this->getScaleToCell());
-								sp->setPosition(Point(s.width - sp->getContentSize().width / this->getScaleToCell(),s.height - sp->getContentSize().height / this->getScaleToCell()));
-								this->addChild(sp, 98, 98);
-							}
-							this->setVisible(true);
-						}));
+						actions.pushBack(createAction(action));
 						break;
 					case PuzzleAction::PZ_APPEAR:
-						actions.pushBack(ScaleTo::create(action->getDuration(),getScaleToCell()));
+						actions.pushBack(appearAction(action));
 						break;
 					case PuzzleAction::PZ_DESAPPEAR:
-						actions.pushBack(ScaleTo::create(action->getDuration(),0.0f));
+						actions.pushBack(desappearAction(action));
 						break;
 					case PuzzleAction::PZ_DOCALLBACK:
 						actions.pushBack(callback);
@@ -400,15 +424,9 @@ void PuzzleMapUnit::addSideChainAnimation(int actionOrder, float waitTime,Point 
 void PuzzleMapUnit::addEliteAttackAnimation(int actionOrder,float waitTime,int chainCount)
 {
 	BaseDamage::BD_TYPE skillType = BaseDamage::NONE;
-	MasterUnit* unit = getUnit();
-	if(unit){
-		MasterUnitSkill* unitSkill = (MasterUnitSkill*)unit->getSkill(0);
-		if(unitSkill){
-			Skill* skill = KoumeChan::getInstance()->getSkillMaster(unitSkill->getKeyNo());
-			if(skill != NULL){
-				skillType = skill->getSkillDamage();
-			}
-		}
+	Skill* skill = getSkill(0);
+	if(skill != NULL){
+		skillType = skill->getSkillDamage();
 	}
 	
 	addAction(actionOrder,PuzzleAction::create(PuzzleAction::PZ_WAIT		,getPos(),0.3f * waitTime));
@@ -493,15 +511,9 @@ void PuzzleMapUnit::addEnemyCenterAnimation(int actionOrder, float waitTime,Poin
 void PuzzleMapUnit::addEliteCenterAnimation(int actionOrder,float waitTime,cocos2d::Point outPos,int nTgt,int chainCount,float attackedTime,BaseDamage::BD_TYPE scoreType)
 {
 	BaseDamage::BD_TYPE skillType = BaseDamage::NONE;
-	MasterUnit* unit = getUnit();
-	if(unit){
-		MasterUnitSkill* unitSkill = (MasterUnitSkill*)unit->getSkill(0);
-		if(unitSkill){
-			Skill* skill = KoumeChan::getInstance()->getSkillMaster(unitSkill->getKeyNo());
-			if(skill != NULL){
-				skillType = skill->getSkillDamage();
-			}
-		}
+	Skill* skill = getSkill(0);
+	if(skill != NULL){
+		skillType = skill->getSkillDamage();
 	}
 	
 	addAction(actionOrder,PuzzleAction::create(PuzzleAction::PZ_WAIT		,getPos(),0.3f * waitTime));

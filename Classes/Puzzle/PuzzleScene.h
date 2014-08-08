@@ -108,7 +108,8 @@ public:
 	virtual void userAllLBCommand() {};
 	virtual void userSelectUnit(cocos2d::Point pos) {};
 	virtual long getSeed();
-	
+	long getShikigamiNo(long tag);
+
 	bool canUnitUseLB(int index);
 	
 protected:
@@ -177,10 +178,13 @@ protected:
 	
 	// ヘルプ関数
 	void addOwnUnitFrameName(std::string frameName);
+	void addShikigami(long sNo,PUZZLE_PHASE phase);
 
 	
 	std::map<PUZZLE_TASK,bool> m_taskMap;
 	std::vector<std::string> m_ownUnitFrameName;
+	std::vector<long> m_player1Shikigami;
+	std::vector<long> m_player2Shikigami;
 	
 	void clearTask()	{ m_taskMap.clear();};
 	

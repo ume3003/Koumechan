@@ -37,6 +37,9 @@ public:
 	std::string getPNGFileName();
 	std::string getFrameName();
 	std::string getSpecialFrameName();
+	std::string getTextureName();
+	
+	
 	virtual void clearChild(MASTERNO masterNo);
 	
 	BaseConditionMaster* getSkill(int idx);

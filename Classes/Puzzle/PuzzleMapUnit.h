@@ -15,12 +15,13 @@
 #include "BaseDamage.h"
 #include "PuzzleActionManager.h"
 #include "MasterUnit.h"
+#include "SSAnimationData.h"
 
 class PuzzleMapUnit : public KcSprite
 {
 public:
 	
-	static PuzzleMapUnit* createWithData(long unitNo,cocos2d::Point pos,int actionOrder,cocos2d::Scene* scene);
+	static PuzzleMapUnit* createWithData(long unitNo,cocos2d::Point pos,int actionOrder,cocos2d::Scene* scene,int rank = 0,long shikigamiNo = -1);
 	
 	enum DRAGMODE {
 		KDRAG_NONE = 0,
@@ -32,6 +33,14 @@ public:
 		ENEMY_HP,
 		ENEMY_PW
 	};
+	
+	enum ANIME_TYPE {
+		WAIT_ANIME = 0,
+		DELETE_ANIME
+	};
+	
+	virtual SSAnimationData* getAnimeData(ANIME_TYPE type) {return NULL;};
+	virtual void doWaitingAnimation() {};
 	
 	bool isNeighborCell(cocos2d::Point pos);
 	int getDistance(PuzzleMapUnit* pDist);
@@ -51,6 +60,11 @@ public:
 	virtual void showExplosion(cocos2d::Point mapPos);
 	virtual void showChainCount(int count,cocos2d::Point pos);
 	virtual void showPoint(cocos2d::Point pos,POINT_TYPE type,int nPoint);
+	
+	virtual cocos2d::FiniteTimeAction* createAction(PuzzleAction* action);
+	virtual cocos2d::FiniteTimeAction* appearAction(PuzzleAction* action);
+	virtual cocos2d::FiniteTimeAction* desappearAction(PuzzleAction* action);
+	
 
 	virtual void addAppearAnimation(	int actionOrder);
 	virtual void addCreateAnimation(	int actionOrder,float waitTime);
@@ -75,11 +89,14 @@ public:
 	MasterUnit* getUnit();
 	long getForceNo();
 	cocos2d::Size getScaledContentSize();
-	
+	MasterUnit* getShikigamiUnit();
+
 protected:
 	PuzzleMapUnit();
 	virtual ~PuzzleMapUnit();
-	virtual bool initWithData(long unitNo,cocos2d::Point pos,int actionOrder,cocos2d::Scene* scene);
+	virtual bool initWithData(long unitNo,cocos2d::Point pos,int actionOrder,cocos2d::Scene* scene,int rank = 0,long shikigamiNo = -1);
+	
+	virtual bool setupSprite();
 	virtual bool onKCTouchBegan(cocos2d::Touch *pTouch, cocos2d::Event *pEvent);
 	virtual void onKCTouchMoved(cocos2d::Touch *pTouch, cocos2d::Event *pEvent);
 	virtual void onKCTouchEnded(cocos2d::Touch *pTouch, cocos2d::Event *pEvent);
@@ -100,6 +117,7 @@ protected:
 	CC_SYNTHESIZE(bool				, m_movable		, Movable);
 	CC_SYNTHESIZE(float				, m_scaleToCell	, ScaleToCell);
 	CC_SYNTHESIZE(int				, m_rank		, Rank);
+	CC_SYNTHESIZE(long				, m_shikigamiNo , ShikigamiNo);
 	CC_SYNTHESIZE_RETAIN(cocos2d::Sprite*	, m_frameSprite	, FrameSprite);
 	CC_SYNTHESIZE_RETAIN(cocos2d::Sprite*	, m_hintSprite	, HintSprite);
 	CC_SYNTHESIZE_RETAIN(cocos2d::Scene*	, m_scene		, Scene);
